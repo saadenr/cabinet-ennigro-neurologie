@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Contactez le cabinet de neurologie du Dr ENNIGRO Soukaina : adresse, horaires et formulaire." />
+  <meta name="keywords" content="contact neurologue, horaires, adresse cabinet neurologie" />
+  <meta name="author" content="Dr ENNIGRO Soukaina" />
+  <meta name="robots" content="index, follow" />
+  <title>Contact | Dr ENNIGRO Soukaina</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <div class="logo">NS</div>
+        <div>
+          <h1>Cabinet de Neurologie</h1>
+          <p>Dr ENNIGRO Soukaina</p>
+        </div>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="site-nav" aria-label="Navigation principale">
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="about.html">A propos</a></li>
+          <li><a href="consultations.html">Consultations</a></li>
+          <li><a href="explorations.html">Explorations</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <h2 class="section-title">Contact</h2>
+      <div class="grid grid-2">
+        <article class="card reveal">
+          <h3>Coordonnees</h3>
+          <ul class="contact-list">
+            <li><strong>Adresse :</strong> Boulevard Abou Baker El Kadiri, Residence Panorama, GH1, Immeuble 1, 2eme etage, Bureau N9</li>
+            <li><strong>Telephone :</strong> 0522580202 / 0660146516</li>
+            <li><strong>Horaires :</strong><br />Lundi - Vendredi : 09h00 - 17h00<br />Samedi : 09h00 - 13h00<br />Dimanche : Ferme</li>
+          </ul>
+        </article>
+
+        <article class="card reveal">
+          <h3>Formulaire de contact</h3>
+          <form id="contact-form" novalidate>
+            <div class="form-group">
+              <label for="name">Nom</label>
+              <input type="text" id="name" name="name" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required />
+            </div>
+            <div class="form-group">
+              <label for="phone">Telephone</label>
+              <input type="tel" id="phone" name="phone" />
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" required></textarea>
+            </div>
+            <button class="btn" type="submit">Envoyer</button>
+            <p id="form-feedback" class="form-feedback" aria-live="polite"></p>
+          </form>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>Contact</strong><br />
+        Boulevard Abou Baker El Kadiri, Residence Panorama, GH1, Immeuble 1, 2eme etage, Bureau N9<br />
+        Tel: 0522580202 / 0660146516
+      </div>
+      <div>
+        <strong>Suivez-nous</strong>
+        <div class="social-links">
+          <a href="#">Facebook</a>
+          <a href="#">Instagram</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
