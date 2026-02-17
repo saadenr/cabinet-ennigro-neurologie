@@ -301,7 +301,7 @@ img {
   max-height: 320px;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  object-position: center top;
+  object-position: center center;
   display: block;
 }
 
