@@ -1,4 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const trackGoogleAdsConversion = function () {
+    if (typeof window.gtag !== "function") {
+      return;
+    }
+    window.gtag("event", "conversion", {
+      send_to: "AW-17738408073/E-GBCKG53cEbEInBqopC"
+    });
+  };
+
+  document.querySelectorAll(".js-booking-link").forEach(function (link) {
+    link.addEventListener("click", function () {
+      trackGoogleAdsConversion();
+    });
+  });
+
   const navToggle = document.querySelector(".nav-toggle");
   const navMenu = document.querySelector(".site-nav");
   const navLinks = document.querySelectorAll('.site-nav a[href^="#"]');
