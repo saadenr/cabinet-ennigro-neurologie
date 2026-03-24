@@ -552,7 +552,7 @@ section[id] {
 }
 
 #contact .grid-2 {
-  grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.85fr);
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.7fr);
   align-items: start;
 }
 
