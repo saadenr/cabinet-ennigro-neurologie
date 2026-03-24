@@ -551,6 +551,11 @@ section[id] {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+#contact .grid-2 {
+  grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.85fr);
+  align-items: start;
+}
+
 #apropos .container,
 #temoignages .container,
 #consultations .container,
