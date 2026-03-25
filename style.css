@@ -1191,7 +1191,9 @@ textarea {
 
 @media (max-width: 920px) {
   #contact .grid-2 {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
   }
 
   #contact .grid-2 > .card {
