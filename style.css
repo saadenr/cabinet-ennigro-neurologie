@@ -551,9 +551,69 @@ section[id] {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-#contact .grid-2 {
-  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.7fr);
-  align-items: start;
+/* ===== CONTACT CLEAN ===== */
+
+.contact-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.contact-info,
+.contact-form-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+}
+
+/* INTRO */
+.contact-intro {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(198, 116, 174, 0.1);
+  border: 1px solid rgba(198, 116, 174, 0.25);
+}
+
+/* MAP */
+.contact-map {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(198, 116, 174, 0.3);
+}
+
+.contact-map iframe {
+  width: 100%;
+  height: 240px;
+  border: 0;
+}
+
+/* FORM */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* CTA */
+.contact-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 #apropos .container,
@@ -1190,17 +1250,15 @@ textarea {
 }
 
 @media (max-width: 920px) {
-  #contact .grid.grid-2 {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 18px;
+
+  /* CONTACT CLEAN */
+  .contact-grid {
+    grid-template-columns: 1fr;
   }
 
-  #contact .grid.grid-2 > .card {
+  .contact-actions .btn {
     width: 100%;
-    min-width: 0;
-    max-width: none;
-    flex: 0 0 auto;
+    justify-content: center;
   }
 
   .about-layout {
@@ -1243,11 +1301,13 @@ textarea {
 }
 
 @media (max-width: 760px) {
-  #contact .grid-2 {
+
+  .contact-grid {
     gap: 16px;
   }
 
-  #contact .card {
+  .contact-info,
+  .contact-form-card {
     padding: 20px;
   }
 
@@ -1389,5 +1449,13 @@ textarea {
 
   .hero-card {
     animation: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
   }
 }
