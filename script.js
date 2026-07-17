@@ -1,18 +1,56 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const trackGoogleAdsConversion = function () {
+  const normalizePhoneNumber = function (value) {
+    if (!value) {
+      return "";
+    }
+
+    const trimmed = value.trim();
+    if (!trimmed) {
+      return "";
+    }
+
+    if (trimmed.startsWith("+")) {
+      return "+" + trimmed.slice(1).replace(/\D/g, "");
+    }
+
+    const digits = trimmed.replace(/\D/g, "");
+    if (!digits) {
+      return "";
+    }
+
+    if (digits.startsWith("212")) {
+      return "+" + digits;
+    }
+
+    if (digits.startsWith("0")) {
+      return "+212" + digits.slice(1);
+    }
+
+    return "+" + digits;
+  };
+
+  const setGoogleAdsUserData = function (userData) {
     if (typeof window.gtag !== "function") {
       return;
     }
-    window.gtag("event", "conversion", {
-      send_to: "AW-17738408073/E-GBCKG53cEbEInBqopC"
-    });
-  };
 
-  document.querySelectorAll(".js-booking-link").forEach(function (link) {
-    link.addEventListener("click", function () {
-      trackGoogleAdsConversion();
-    });
-  });
+    const gtagUserData = {};
+    if (userData.email) {
+      gtagUserData.email = userData.email.trim().toLowerCase();
+    }
+    if (userData.phoneNumber) {
+      gtagUserData.phone_number = normalizePhoneNumber(userData.phoneNumber);
+    }
+    if (userData.address) {
+      gtagUserData.address = userData.address;
+    }
+
+    if (Object.keys(gtagUserData).length === 0) {
+      return;
+    }
+
+    window.gtag("set", "user_data", gtagUserData);
+  };
 
   const navToggle = document.querySelector(".nav-toggle");
   const navMenu = document.querySelector(".site-nav");
@@ -300,6 +338,17 @@ document.addEventListener("DOMContentLoaded", function () {
       };
       console.info("Contact (JSON):", payload);
 
+      setGoogleAdsUserData({
+        email: email,
+        phoneNumber: phone,
+        address: {
+          first_name: name.split(/\s+/)[0] || "",
+          last_name: name.split(/\s+/).slice(1).join(" "),
+          country: "MA",
+          city: "Casablanca",
+          street: "Boulevard Abou Baker El Kadiri, Residence Panorama, GH1, Immeuble 1, 2eme etage, Bureau N9"
+        }
+      });
       const endpoint = (contactForm.dataset.endpoint || "").trim();
       const mailto = (contactForm.dataset.mailto || "").trim();
 
