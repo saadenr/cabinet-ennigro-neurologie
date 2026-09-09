@@ -52,6 +52,38 @@ document.addEventListener("DOMContentLoaded", function () {
     window.gtag("set", "user_data", gtagUserData);
   };
 
+  const trackInteraction = function (eventName, params) {
+    if (typeof window.gtag === "function") {
+      window.gtag("event", eventName, params || {});
+    }
+  };
+
+  document.addEventListener("click", function (event) {
+    const link = event.target.closest("a[href]");
+    if (!link) {
+      return;
+    }
+
+    const href = link.getAttribute("href") || "";
+    if (href.startsWith("tel:")) {
+      trackInteraction("clic_telephone", {
+        event_category: "contact",
+        event_label: link.textContent.trim() || "appel cabinet"
+      });
+
+      if (link.dataset.adsConversion === "true" && typeof window.gtag === "function") {
+        window.gtag("event", "conversion", {
+          send_to: "AW-17738408073/E-GBCKG53cEbEInBqopC"
+        });
+      }
+    } else if (href.includes("wa.me") || href.includes("api.whatsapp")) {
+      trackInteraction("clic_whatsapp", {
+        event_category: "contact",
+        event_label: "WhatsApp cabinet"
+      });
+    }
+  });
+
   const navToggle = document.querySelector(".nav-toggle");
   const navMenu = document.querySelector(".site-nav");
   const navLinks = document.querySelectorAll('.site-nav a[href^="#"]');
@@ -350,7 +382,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
       const endpoint = (contactForm.dataset.endpoint || "").trim();
-      const mailto = (contactForm.dataset.mailto || "").trim();
 
       if (endpoint) {
         try {
@@ -364,28 +395,19 @@ document.addEventListener("DOMContentLoaded", function () {
             throw new Error("network_error");
           }
 
+          trackInteraction("formulaire_envoye", {
+            event_category: "contact",
+            event_label: "formulaire de contact"
+          });
           setFeedback("Votre message a bien été envoyé. Nous vous recontacterons rapidement.", "success");
           contactForm.reset();
           return;
         } catch (error) {
-          setFeedback("L'envoi direct a échoué. Ouverture de votre messagerie...", "error");
+          setFeedback("L'envoi direct a échoué. Appelez le cabinet ou contactez-le par WhatsApp.", "error");
         }
       }
 
-      if (mailto) {
-        const subject = encodeURIComponent("Demande de contact - Cabinet de neurologie");
-        const body = encodeURIComponent(
-          "Nom: " + name + "\n" +
-          "Email: " + email + "\n" +
-          "Téléphone: " + (phone || "Non renseigné") + "\n\n" +
-          "Message:\n" + message
-        );
-        window.location.href = "mailto:" + mailto + "?subject=" + subject + "&body=" + body;
-        setFeedback("Votre messagerie s'est ouverte pour finaliser l'envoi.", "success");
-        return;
-      }
-
-      setFeedback("Aucune destination d'envoi n'est configurée.", "error");
+      setFeedback("Le formulaire n'est pas encore connecté. Appelez le cabinet ou contactez-le par WhatsApp.", "error");
     });
   }
 });
