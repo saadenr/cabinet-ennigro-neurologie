@@ -1271,6 +1271,45 @@ textarea {
   color: #d9ffea;
 }
 
+.contact-conversion-note {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 18px;
+  padding: 14px;
+  border: 1px solid rgba(198, 116, 174, 0.28);
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(198, 116, 174, 0.13), rgba(255, 255, 255, 0.03));
+}
+
+.contact-conversion-note strong {
+  color: #ffffff;
+}
+
+.contact-conversion-note span,
+.form-connection-note {
+  color: #d8cbda;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.contact-card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.btn-small {
+  padding: 9px 12px;
+  font-size: 0.82rem;
+}
+
+.form-connection-note {
+  margin: 8px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 .legal-wrap details {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(198, 116, 174, 0.25);
