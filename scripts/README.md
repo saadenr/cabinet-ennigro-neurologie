@@ -19,6 +19,19 @@ The delivered movie is `assets/video/visite-cabinet.mp4`; its poster is
 `assets/images/tour-poster.jpg`. Playback is user-initiated with `preload="none"`.
 The photo gallery provides the same rooms as an alternative to the silent video.
 
+The player now includes five room chapters (0, 5, 10, 15 and 20 seconds), active
+chapter feedback, and fullscreen where supported. If the movie is replaced,
+update those timestamps and the duration labels along with the chapter logic.
+
+## Generative walkthrough status
+
+A Seedance 2.5 image-reference walkthrough was requested through Higgsfield
+(five real cabinet photos, 20 seconds, 1080p, silent). Submission was rejected:
+the connected account is on the free plan with zero credits and an expired trial.
+No generative video was produced or integrated. The current delivered movie is
+still the original animated photographic montage; do not describe it as a filmed
+or AI-generated spatial walkthrough. No campaign settings or budget were changed.
+
 ## Website checks performed
 
 - Chrome desktop at 1440, 1024 and 768 pixels; mobile layouts at 430, 390 and

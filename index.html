@@ -723,8 +723,19 @@
               l’accueil aux salles d’exploration.
             </p>
           </div>
-          <div class="tour-layout" id="visite">
+          <div class="tour-layout cinema-tour" id="visite">
             <div class="tour-stage">
+              <div class="tour-toolbar">
+                <span><span class="tiny-dot"></span> VISITE DU CABINET</span>
+                <button
+                  id="tour-fullscreen"
+                  type="button"
+                  hidden
+                  aria-label="Afficher la visite en plein écran"
+                >
+                  Plein écran ↗
+                </button>
+              </div>
               <video
                 id="cabinet-video"
                 controls
@@ -742,14 +753,19 @@
                   espaces dans la galerie ci-dessous.
                 </p>
               </video>
+              <div class="tour-caption">
+                <span id="tour-room" aria-live="polite"
+                  >01 / Accueil du cabinet</span
+                ><span>Photos réelles · Montage animé</span>
+              </div>
               <p class="video-error" hidden>
                 La vidéo n’est pas disponible. Découvrez les mêmes espaces dans
                 la galerie ci-dessous.
               </p>
             </div>
             <div class="tour-intro">
-              <span class="tour-index">05<span>espaces à découvrir</span></span>
-              <h3>Votre visite<br />commence ici.</h3>
+              <p class="eyebrow">DÉCOUVRIR LES LIEUX</p>
+              <h3>Votre visite<br /> commence ici.</h3>
               <p>
                 Une visite animée à partir des photographies réelles du cabinet.
               </p>
@@ -769,6 +785,37 @@
                 Lancer la visite <small>25 s</small>
               </button>
               <p class="tour-note">Sans son · Lecture à votre rythme</p>
+              <div
+                class="tour-chapters"
+                aria-label="Choisir un espace dans la vidéo"
+                hidden
+              >
+                <button type="button" data-tour-time="0" aria-current="true">
+                  <img src="assets/images/1.jpg" alt="" loading="lazy" /><span
+                    ><small>01 / ACCUEIL</small>Bienvenue au cabinet</span
+                  ><span aria-hidden="true">↗</span>
+                </button>
+                <button type="button" data-tour-time="5">
+                  <img src="assets/images/2.jpg" alt="" loading="lazy" /><span
+                    ><small>02 / SALLE D’ATTENTE</small>Un temps pour vous</span
+                  ><span aria-hidden="true">↗</span>
+                </button>
+                <button type="button" data-tour-time="10">
+                  <img src="assets/images/3.jpg" alt="" loading="lazy" /><span
+                    ><small>03 / CONSULTATION</small>Un espace d’écoute</span
+                  ><span aria-hidden="true">↗</span>
+                </button>
+                <button type="button" data-tour-time="15">
+                  <img src="assets/images/4.jpg" alt="" loading="lazy" /><span
+                    ><small>04 / EEG</small>L’exploration cérébrale</span
+                  ><span aria-hidden="true">↗</span>
+                </button>
+                <button type="button" data-tour-time="20">
+                  <img src="assets/images/5.jpg" alt="" loading="lazy" /><span
+                    ><small>05 / ENMG</small>Les nerfs et les muscles</span
+                  ><span aria-hidden="true">↗</span>
+                </button>
+              </div>
             </div>
           </div>
           <div class="gallery-heading">

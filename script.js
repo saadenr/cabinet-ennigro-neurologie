@@ -87,6 +87,62 @@
   const video = document.querySelector("#cabinet-video");
   const play = document.querySelector("#play-tour");
   const videoError = document.querySelector(".video-error");
+  const chapters = [...document.querySelectorAll("[data-tour-time]")];
+  const chapterNames = [
+    "Accueil du cabinet",
+    "Salle d’attente",
+    "Salle de consultation",
+    "Salle d’EEG",
+    "Salle d’ENMG",
+  ];
+  const chapterCaption = document.querySelector("#tour-room");
+  let pendingChapter = null;
+  let activeChapter = -1;
+  document.querySelector(".tour-chapters").hidden = false;
+  const updateChapter = () => {
+    const index = Math.min(
+      chapters.length - 1,
+      Math.floor(video.currentTime / 5),
+    );
+    if (index === activeChapter) return;
+    activeChapter = index;
+    chapters.forEach((button, i) => {
+      if (i === index) button.setAttribute("aria-current", "true");
+      else button.removeAttribute("aria-current");
+    });
+    chapterCaption.textContent = `0${index + 1} / ${chapterNames[index]}`;
+  };
+  video.addEventListener("loadedmetadata", () => {
+    if (pendingChapter !== null) {
+      video.currentTime = pendingChapter;
+      pendingChapter = null;
+    }
+  });
+  video.addEventListener("timeupdate", updateChapter);
+  chapters.forEach((button) =>
+    button.addEventListener("click", () => {
+      const time = Number(button.dataset.tourTime);
+      if (video.readyState >= 1) video.currentTime = time;
+      else pendingChapter = time;
+      videoError.hidden = true;
+      video.play().catch(() => {
+        videoError.hidden = false;
+      });
+    }),
+  );
+  const fullscreen = document.querySelector("#tour-fullscreen");
+  fullscreen.hidden = !(
+    document.fullscreenEnabled || video.webkitEnterFullscreen
+  );
+  fullscreen.addEventListener("click", async () => {
+    try {
+      if (video.requestFullscreen && document.fullscreenEnabled)
+        await video.requestFullscreen();
+      else if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
+    } catch {
+      /* Native video controls remain available when fullscreen is denied. */
+    }
+  });
   play.addEventListener("click", async () => {
     if (!video.paused) {
       video.pause();

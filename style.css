@@ -1823,3 +1823,199 @@ address {
     flex-basis: 30%;
   }
 }
+
+/* Framed player and room selector give the visit a dedicated viewing space. */
+.cabinet-section {
+  background:
+    radial-gradient(ellipse at 0 30%, #72526655, transparent 65%),
+    var(--plum-dark);
+}
+.cinema-tour {
+  grid-template-columns: minmax(0, 1.9fr) minmax(265px, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+.cinema-tour .tour-stage {
+  border: 1px solid #e8dbe333;
+  border-radius: 12px;
+  box-shadow: 0 25px 70px #170e2033;
+  position: sticky;
+  top: 125px;
+}
+.tour-toolbar,
+.tour-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 22px;
+  font-size: 10px;
+  color: #e7dbe3;
+  background: #342431;
+}
+.tour-toolbar > span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+}
+.tour-toolbar .tiny-dot {
+  background: #d7b5cc;
+}
+.tour-toolbar button {
+  color: #f8f5f0;
+  border: 1px solid #e8dbe34d;
+  background: transparent;
+  border-radius: 4px;
+  min-height: 36px;
+  padding: 5px 12px;
+  font-size: 10px;
+}
+.tour-caption {
+  font-size: 11px;
+  border-top: 1px solid #ffffff19;
+}
+.tour-caption > span:last-child {
+  font-size: 9px;
+  color: #c7b5c1;
+}
+.cinema-tour .tour-intro {
+  display: block;
+}
+.cinema-tour .tour-intro h3 {
+  margin: 0 0 18px;
+  font-size: 36px;
+}
+.cinema-tour .tour-intro > .eyebrow {
+  margin-bottom: 16px;
+  font-size: 9px;
+  color: #ddc5d5;
+}
+.tour-chapters {
+  margin-top: 25px;
+  display: grid;
+  gap: 8px;
+}
+.tour-chapters[hidden],
+.tour-toolbar button[hidden] {
+  display: none;
+}
+.tour-chapters button {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  text-align: left;
+  padding: 9px;
+  background: #ffffff05;
+  border: 1px solid #ffffff19;
+  color: #f8f5f0;
+  border-radius: 7px;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+.tour-chapters button:hover,
+.tour-chapters button[aria-current] {
+  background: #ffffff12;
+  border-color: #d0adc280;
+}
+.tour-chapters img {
+  width: 48px;
+  height: 52px;
+  border-radius: 3px;
+  object-fit: cover;
+}
+.tour-chapters button > span:nth-child(2) {
+  font-size: 11px;
+  line-height: 1.6;
+}
+.tour-chapters small {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 0.07em;
+  color: #d7bace;
+}
+.tour-chapters button > span:last-child {
+  margin-left: auto;
+  color: #d7bace;
+  padding-right: 8px;
+}
+.hero-tour {
+  transition:
+    transform 0.25s,
+    box-shadow 0.25s;
+}
+.hero-tour:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 64px #352d3320;
+}
+@media (max-width: 900px) {
+  .cinema-tour {
+    grid-template-columns: 1fr;
+  }
+  .cinema-tour .tour-stage {
+    position: static;
+  }
+  .tour-chapters {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .cinema-tour .tour-intro .btn {
+    width: fit-content;
+    min-width: 235px;
+  }
+  .tour-chapters button > span:last-child {
+    display: none;
+  }
+}
+@media (max-width: 680px) {
+  .cinema-tour {
+    gap: 28px;
+  }
+  .tour-toolbar,
+  .tour-caption {
+    padding: 12px;
+    font-size: 9px;
+  }
+  .tour-caption {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .tour-toolbar button {
+    font-size: 9px;
+    padding-inline: 8px;
+  }
+  .cinema-tour .tour-intro h3 {
+    font-size: 30px;
+  }
+  .tour-chapters {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .tour-chapters img {
+    width: 35px;
+    height: 46px;
+  }
+  .tour-chapters button {
+    gap: 8px;
+    padding: 8px;
+  }
+  .tour-chapters button > span:nth-child(2) {
+    font-size: 9px;
+  }
+  .tour-chapters small {
+    font-size: 7px;
+    letter-spacing: 0;
+  }
+  .tour-chapters button:last-child {
+    grid-column: 1/-1;
+  }
+  .tour-chapters button:last-child > span:last-child {
+    display: block;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-tour:hover {
+    transform: none;
+  }
+}
