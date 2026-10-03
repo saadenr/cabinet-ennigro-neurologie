@@ -20,7 +20,8 @@ The delivered movie is `assets/video/visite-cabinet.mp4`; its poster is
 The photo gallery provides the same rooms as an alternative to the silent video.
 
 The player now includes five room chapters (0, 5, 10, 15 and 20 seconds), active
-chapter feedback, and fullscreen where supported. If the movie is replaced,
+chapter feedback. The custom fullscreen button was removed; native fullscreen
+controls are hidden where the browser supports `controlslist="nofullscreen"`. If the movie is replaced,
 update those timestamps and the duration labels along with the chapter logic.
 
 ## Generative walkthrough status

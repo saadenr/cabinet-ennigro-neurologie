@@ -130,19 +130,6 @@
       });
     }),
   );
-  const fullscreen = document.querySelector("#tour-fullscreen");
-  fullscreen.hidden = !(
-    document.fullscreenEnabled || video.webkitEnterFullscreen
-  );
-  fullscreen.addEventListener("click", async () => {
-    try {
-      if (video.requestFullscreen && document.fullscreenEnabled)
-        await video.requestFullscreen();
-      else if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
-    } catch {
-      /* Native video controls remain available when fullscreen is denied. */
-    }
-  });
   play.addEventListener("click", async () => {
     if (!video.paused) {
       video.pause();
