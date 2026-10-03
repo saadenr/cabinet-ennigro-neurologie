@@ -1,413 +1,186 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const normalizePhoneNumber = function (value) {
-    if (!value) {
-      return "";
-    }
-
-    const trimmed = value.trim();
-    if (!trimmed) {
-      return "";
-    }
-
-    if (trimmed.startsWith("+")) {
-      return "+" + trimmed.slice(1).replace(/\D/g, "");
-    }
-
-    const digits = trimmed.replace(/\D/g, "");
-    if (!digits) {
-      return "";
-    }
-
-    if (digits.startsWith("212")) {
-      return "+" + digits;
-    }
-
-    if (digits.startsWith("0")) {
-      return "+212" + digits.slice(1);
-    }
-
-    return "+" + digits;
+(() => {
+  "use strict";
+  document.documentElement.classList.add("js");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const nav = document.querySelector(".site-nav");
+  const toggle = document.querySelector(".nav-toggle");
+  const closeMenu = () => {
+    nav.classList.remove("open");
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-label", "Ouvrir le menu");
   };
-
-  const setGoogleAdsUserData = function (userData) {
-    if (typeof window.gtag !== "function") {
-      return;
-    }
-
-    const gtagUserData = {};
-    if (userData.email) {
-      gtagUserData.email = userData.email.trim().toLowerCase();
-    }
-    if (userData.phoneNumber) {
-      gtagUserData.phone_number = normalizePhoneNumber(userData.phoneNumber);
-    }
-    if (userData.address) {
-      gtagUserData.address = userData.address;
-    }
-
-    if (Object.keys(gtagUserData).length === 0) {
-      return;
-    }
-
-    window.gtag("set", "user_data", gtagUserData);
-  };
-
-  const trackInteraction = function (eventName, params) {
-    if (typeof window.gtag === "function") {
-      window.gtag("event", eventName, params || {});
-    }
-  };
-
-  document.addEventListener("click", function (event) {
-    const link = event.target.closest("a[href]");
-    if (!link) {
-      return;
-    }
-
-    const href = link.getAttribute("href") || "";
-    if (href.startsWith("tel:")) {
-      trackInteraction("clic_telephone", {
+  toggle.addEventListener("click", () => {
+    const open = nav.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute(
+      "aria-label",
+      open ? "Fermer le menu" : "Ouvrir le menu",
+    );
+  });
+  nav.addEventListener("click", (e) => {
+    if (e.target.closest("a")) closeMenu();
+  });
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".site-header")) closeMenu();
+    const a = e.target.closest("a[href]");
+    if (!a || typeof window.gtag !== "function") return;
+    // Track intent only. A telephone click is not a confirmed call or appointment.
+    if (a.getAttribute("href").startsWith("tel:")) {
+      window.gtag("event", "clic_telephone", {
         event_category: "contact",
-        event_label: link.textContent.trim() || "appel cabinet"
+        event_label: "appel cabinet",
       });
-
-      if (link.dataset.adsConversion === "true" && typeof window.gtag === "function") {
+      if (a.dataset.adsConversion === "true")
         window.gtag("event", "conversion", {
-          send_to: "AW-17738408073/E-GBCKG53cEbEInBqopC"
+          send_to: "AW-17738408073/E-GBCKG53cEbEInBqopC",
         });
-      }
-    } else if (href.includes("wa.me") || href.includes("api.whatsapp")) {
-      trackInteraction("clic_whatsapp", {
+    } else if (a.hostname === "wa.me") {
+      window.gtag("event", "clic_whatsapp", {
         event_category: "contact",
-        event_label: "WhatsApp cabinet"
+        event_label: "WhatsApp cabinet",
       });
     }
   });
-
-  const navToggle = document.querySelector(".nav-toggle");
-  const navMenu = document.querySelector(".site-nav");
-  const navLinks = document.querySelectorAll('.site-nav a[href^="#"]');
-
-  if (navToggle && navMenu) {
-    navToggle.addEventListener("click", function () {
-      const isOpen = navMenu.classList.toggle("open");
-      navToggle.setAttribute("aria-expanded", String(isOpen));
-    });
-  }
-
-  navLinks.forEach(function (link) {
-    link.addEventListener("click", function () {
-      if (navMenu && navToggle) {
-        navMenu.classList.remove("open");
-        navToggle.setAttribute("aria-expanded", "false");
-      }
-    });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && nav.classList.contains("open")) {
+      closeMenu();
+      toggle.focus();
+    }
   });
-
-  if (navLinks.length > 0) {
-    const updateActiveLink = function () {
-      const headerHeight = document.querySelector(".site-header")?.offsetHeight || 90;
-      const scrollOffset = headerHeight + 18;
-      let currentId = "accueil";
-
-      navLinks.forEach(function (link) {
-        const targetId = link.getAttribute("href").slice(1);
-        const section = document.getElementById(targetId);
-        if (section && window.scrollY + scrollOffset >= section.offsetTop) {
-          currentId = targetId;
-        }
-      });
-
-      navLinks.forEach(function (link) {
-        const isActive = link.getAttribute("href") === "#" + currentId;
-        link.classList.toggle("active", isActive);
-      });
-    };
-
-    window.addEventListener("scroll", updateActiveLink);
-    updateActiveLink();
-  }
-
-  const revealItems = document.querySelectorAll(".reveal");
-  revealItems.forEach(function (item, index) {
-    item.style.transitionDelay = String((index % 4) * 45) + "ms";
-  });
+  window.matchMedia("(min-width: 681px)").addEventListener("change", closeMenu);
 
   if ("IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(
-      function (entries, obs) {
-        entries.forEach(function (entry) {
+    const revealObserver = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            obs.unobserve(entry.target);
+            entry.target.classList.remove("is-waiting");
+            revealObserver.unobserve(entry.target);
           }
-        });
-      },
-      { threshold: 0.08, rootMargin: "0px 0px -10% 0px" }
+        }),
+      { threshold: 0, rootMargin: "0px 0px 40px 0px" },
     );
-
-    revealItems.forEach(function (item) {
-      const rect = item.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.92) {
-        item.classList.add("visible");
-      } else {
-        observer.observe(item);
-      }
-    });
-  } else {
-    revealItems.forEach(function (item) {
-      item.classList.add("visible");
-    });
+    if (!reducedMotion.matches)
+      document.querySelectorAll(".reveal").forEach((el) => {
+        // Visible content never waits for an observer callback to appear.
+        if (el.getBoundingClientRect().top > window.innerHeight)
+          el.classList.add("is-waiting");
+        revealObserver.observe(el);
+      });
+    const sectionObserver = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          nav.querySelectorAll("a").forEach((a) => {
+            if (a.hash === "#" + entry.target.id)
+              a.setAttribute("aria-current", "location");
+            else a.removeAttribute("aria-current");
+          });
+        }),
+      { rootMargin: "-15% 0px -60% 0px" },
+    );
+    document
+      .querySelectorAll("main section[id]")
+      .forEach((el) => sectionObserver.observe(el));
   }
 
-  document.querySelectorAll("[data-carousel]").forEach(function (carousel) {
-    const slides = carousel.querySelectorAll(".carousel-slide");
-    let current = 0;
-    let startX = 0;
-    let autoTimer = null;
-
-    const showSlide = function (index) {
-      current = (index + slides.length) % slides.length;
-      const left = (current - 1 + slides.length) % slides.length;
-      const right = (current + 1) % slides.length;
-
-      slides.forEach(function (slide, i) {
-        slide.classList.remove("is-left", "is-center", "is-right", "is-hidden");
-        if (i === current) {
-          slide.classList.add("is-center");
-          slide.setAttribute("aria-hidden", "false");
-        } else if (i === left) {
-          slide.classList.add("is-left");
-          slide.setAttribute("aria-hidden", "false");
-        } else if (i === right) {
-          slide.classList.add("is-right");
-          slide.setAttribute("aria-hidden", "false");
-        } else {
-          slide.classList.add("is-hidden");
-          slide.setAttribute("aria-hidden", "true");
-        }
-      });
-    };
-
-    slides.forEach(function (slide, i) {
-      slide.addEventListener("click", function () {
-        if (slide.classList.contains("is-left")) {
-          showSlide(current - 1);
-        } else if (slide.classList.contains("is-right")) {
-          showSlide(current + 1);
-        } else {
-          showSlide(i);
-        }
-      });
-    });
-
-    const stopAuto = function () {
-      if (autoTimer) {
-        clearInterval(autoTimer);
-        autoTimer = null;
-      }
-    };
-
-    const startAuto = function () {
-      stopAuto();
-      autoTimer = setInterval(function () {
-        showSlide(current + 1);
-      }, 10000);
-    };
-
-    carousel.addEventListener("touchstart", function (event) {
-      stopAuto();
-      startX = event.touches[0].clientX;
-    });
-
-    carousel.addEventListener("touchend", function (event) {
-      const endX = event.changedTouches[0].clientX;
-      const delta = startX - endX;
-      if (Math.abs(delta) > 40) {
-        if (delta > 0) {
-          showSlide(current + 1);
-        } else {
-          showSlide(current - 1);
-        }
-      }
-      startAuto();
-    });
-
-    carousel.addEventListener("mouseenter", stopAuto);
-    carousel.addEventListener("mouseleave", startAuto);
-    carousel.addEventListener("focusin", stopAuto);
-    carousel.addEventListener("focusout", startAuto);
-
-    carousel.addEventListener("keydown", function (event) {
-      if (event.key === "ArrowLeft") {
-        showSlide(current - 1);
-      } else if (event.key === "ArrowRight") {
-        showSlide(current + 1);
-      }
-    });
-
-    showSlide(0);
-    startAuto();
-  });
-
-  document.querySelectorAll("[data-testimonials-carousel]").forEach(function (carousel) {
-    const slides = carousel.querySelectorAll(".testimonial-slide");
-    const dots = carousel.querySelectorAll(".testimonials-dots button");
-    let current = 0;
-    let timer = null;
-
-    const show = function (index) {
-      current = (index + slides.length) % slides.length;
-      const left = (current - 1 + slides.length) % slides.length;
-      const right = (current + 1) % slides.length;
-
-      slides.forEach(function (slide, i) {
-        slide.classList.remove("is-left", "is-center", "is-right", "is-hidden");
-        if (i === current) {
-          slide.classList.add("is-center");
-        } else if (i === left) {
-          slide.classList.add("is-left");
-        } else if (i === right) {
-          slide.classList.add("is-right");
-        } else {
-          slide.classList.add("is-hidden");
-        }
-      });
-      if (dots.length > 0) {
-        dots.forEach(function (dot, i) {
-          dot.classList.toggle("active", i === current);
-        });
-      }
-    };
-
-    const stop = function () {
-      if (timer) {
-        clearInterval(timer);
-        timer = null;
-      }
-    };
-
-    const start = function () {
-      stop();
-      timer = setInterval(function () {
-        show(current + 1);
-      }, 8000);
-    };
-
-    if (dots.length > 0) {
-      dots.forEach(function (dot, i) {
-        dot.addEventListener("click", function () {
-          show(i);
-          start();
-        });
-      });
+  const video = document.querySelector("#cabinet-video");
+  const play = document.querySelector("#play-tour");
+  const videoError = document.querySelector(".video-error");
+  play.addEventListener("click", async () => {
+    if (!video.paused) {
+      video.pause();
+      return;
     }
-
-    slides.forEach(function (slide) {
-      slide.addEventListener("click", function () {
-        if (slide.classList.contains("is-left")) {
-          show(current - 1);
-          start();
-        } else if (slide.classList.contains("is-right")) {
-          show(current + 1);
-          start();
-        }
+    try {
+      await video.play();
+      video.scrollIntoView({
+        behavior: reducedMotion.matches ? "instant" : "smooth",
+        block: "center",
       });
-    });
-
-    carousel.addEventListener("mouseenter", stop);
-    carousel.addEventListener("mouseleave", start);
-    carousel.addEventListener("touchstart", stop, { passive: true });
-    carousel.addEventListener("touchend", start, { passive: true });
-
-    show(0);
-    start();
+    } catch {
+      videoError.hidden = false;
+    }
+  });
+  const updateVideoButton = () => {
+    play.innerHTML = video.paused
+      ? '<span aria-hidden="true">▷</span> Lancer la visite <small>25 s</small>'
+      : '<span aria-hidden="true">Ⅱ</span> Mettre en pause';
+  };
+  ["play", "pause", "ended"].forEach((event) =>
+    video.addEventListener(event, updateVideoButton),
+  );
+  video.addEventListener("error", () => {
+    videoError.hidden = false;
+  });
+  video.querySelector("source").addEventListener("error", () => {
+    videoError.hidden = false;
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) video.pause();
   });
 
-  const contactForm = document.getElementById("contact-form");
-  if (contactForm) {
-    const feedback = document.getElementById("form-feedback");
-
-    const setFeedback = function (message, type) {
-      feedback.textContent = message;
-      feedback.className = "form-feedback " + type;
-    };
-
-    contactForm.addEventListener("submit", async function (event) {
-      event.preventDefault();
-
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const message = document.getElementById("message").value.trim();
-      const website = contactForm.querySelector('input[name="website"]')?.value.trim();
-
-      if (!name || !email || !message) {
-        setFeedback("Veuillez remplir Nom, Email et Message.", "error");
+  const gallery = [...document.querySelectorAll("[data-gallery]")];
+  const dialog = document.querySelector(".lightbox");
+  const largeImage = document.querySelector("#lightbox-image");
+  let photoIndex = 0;
+  const showPhoto = (index) => {
+    photoIndex = (index + gallery.length) % gallery.length;
+    const source = gallery[photoIndex].querySelector("img");
+    largeImage.src = gallery[photoIndex].href;
+    largeImage.alt = source.alt;
+    document.querySelector("#lightbox-caption").textContent =
+      `${photoIndex + 1} / ${gallery.length} · ${source.alt}`;
+  };
+  gallery.forEach((link, index) =>
+    link.addEventListener("click", (e) => {
+      if (typeof dialog.showModal !== "function" || e.metaKey || e.ctrlKey)
         return;
-      }
-
-      const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-      if (!emailIsValid) {
-        setFeedback("Veuillez saisir une adresse email valide.", "error");
-        return;
-      }
-
-      if (website) {
-        setFeedback("Envoi bloqué.", "error");
-        return;
-      }
-
-      const payload = {
-        type: "contact_request",
-        patient: {
-          name: name,
-          email: email,
-          phone: phone || null
-        },
-        message: message,
-        submittedAt: new Date().toISOString()
-      };
-      console.info("Contact (JSON):", payload);
-
-      setGoogleAdsUserData({
-        email: email,
-        phoneNumber: phone,
-        address: {
-          first_name: name.split(/\s+/)[0] || "",
-          last_name: name.split(/\s+/).slice(1).join(" "),
-          country: "MA",
-          city: "Casablanca",
-          street: "Boulevard Abou Baker El Kadiri, Residence Panorama, GH1, Immeuble 1, 2eme etage, Bureau N9"
-        }
-      });
-      const endpoint = (contactForm.dataset.endpoint || "").trim();
-
-      if (endpoint) {
-        try {
-          const response = await fetch(endpoint, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-          });
-
-          if (!response.ok) {
-            throw new Error("network_error");
-          }
-
-          trackInteraction("formulaire_envoye", {
-            event_category: "contact",
-            event_label: "formulaire de contact"
-          });
-          setFeedback("Votre message a bien été envoyé. Nous vous recontacterons rapidement.", "success");
-          contactForm.reset();
-          return;
-        } catch (error) {
-          setFeedback("L'envoi direct a échoué. Appelez le cabinet ou contactez-le par WhatsApp.", "error");
-        }
-      }
-
-      setFeedback("Le formulaire n'est pas encore connecté. Appelez le cabinet ou contactez-le par WhatsApp.", "error");
+      e.preventDefault();
+      showPhoto(index);
+      dialog.showModal();
+    }),
+  );
+  dialog
+    .querySelector(".lightbox-close")
+    .addEventListener("click", () => dialog.close());
+  dialog.addEventListener("click", (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+  dialog.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+      e.preventDefault();
+      showPhoto(photoIndex + (e.key === "ArrowRight" ? 1 : -1));
+    }
+  });
+  document
+    .querySelectorAll("[data-photo-dir]")
+    .forEach((button) =>
+      button.addEventListener("click", () =>
+        showPhoto(photoIndex + Number(button.dataset.photoDir)),
+      ),
+    );
+  const reviews = document.querySelector(".reviews");
+  const reviewButtons = [...document.querySelectorAll("[data-review-dir]")];
+  const updateReviewButtons = () =>
+    reviewButtons.forEach((button) => {
+      button.disabled =
+        Number(button.dataset.reviewDir) < 0
+          ? reviews.scrollLeft < 5
+          : reviews.scrollLeft + reviews.clientWidth >= reviews.scrollWidth - 5;
     });
-  }
-});
+  reviewButtons.forEach((button) =>
+    button.addEventListener("click", () => {
+      const card = reviews.querySelector(".review");
+      const gap = parseFloat(getComputedStyle(reviews).gap);
+      reviews.scrollBy({
+        left: Number(button.dataset.reviewDir) * (card.offsetWidth + gap),
+        behavior: reducedMotion.matches ? "instant" : "smooth",
+      });
+    }),
+  );
+  reviews.addEventListener("scroll", updateReviewButtons, { passive: true });
+  window.addEventListener("resize", updateReviewButtons);
+  updateReviewButtons();
+  document.querySelector("#year").textContent = new Date().getFullYear();
+})();
