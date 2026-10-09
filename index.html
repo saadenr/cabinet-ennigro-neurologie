@@ -42,19 +42,8 @@
     <meta name="geo.placename" content="Casablanca" />
     <title>Dr ENNIGRO Soukaina | Neurologue à Casablanca</title>
     <link rel="canonical" href="https://www.medecin-neurologuecasa.com/" />
-    <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=AW-17738408073"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "AW-17738408073");
-    </script>
+    <!-- Google Ads is loaded by privacy.js only after consent. -->
+    <script src="privacy.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -230,7 +219,7 @@
             <path
               d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.19 18a19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.91-8.67A2 2 0 0 1 3.26 1.2h3a2 2 0 0 1 2 1.72c.12.96.35 1.9.69 2.79a2 2 0 0 1-.45 2.11L7.23 9.09a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.83.57 2.79.69A2 2 0 0 1 22 16.92Z"
             /></svg
-          >Prendre rendez-vous</a
+          >Appeler pour un rendez-vous</a
         >
       </div>
     </header>
@@ -264,7 +253,7 @@
                 <path
                   d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.19 18a19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.91-8.67A2 2 0 0 1 3.26 1.2h3a2 2 0 0 1 2 1.72c.12.96.35 1.9.69 2.79a2 2 0 0 1-.45 2.11L7.23 9.09a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.83.57 2.79.69A2 2 0 0 1 22 16.92Z"
                 /></svg
-              >Prendre rendez-vous</a
+              >Appeler pour un rendez-vous</a
             ><a class="text-link" href="#cabinet"
               >Découvrir le cabinet
               <svg
@@ -1521,11 +1510,15 @@
           <p>
             Le site présente le cabinet et ne remplace pas une consultation
             médicale. Il ne collecte pas de demandes via un formulaire. Les
-            clics sur les liens d’appel et WhatsApp font l’objet d’une mesure
-            d’interaction via Google Ads ; un clic ne signifie pas qu’une
+            clics sur les liens d’appel et WhatsApp peuvent faire l’objet d’une mesure
+            d’interaction via Google Ads, uniquement avec votre accord ; un clic ne signifie pas qu’une
             consultation a eu lieu. Aucune donnée de santé ou coordonnée de
             patient n’est envoyée par le site à Google Ads.
           </p>
+          <p>Votre choix de mesure publicitaire est conservé pendant six mois sur cet appareil.
+            Vous pouvez le modifier à tout moment avec « Mes préférences de confidentialité ».
+            Refuser ne bloque ni les appels ni WhatsApp. La personnalisation publicitaire
+            et la collecte de coordonnées pour le suivi avancé sont désactivées.</p>
           <p>
             Google Maps, Instagram et WhatsApp sont des services tiers
             appliquant leurs propres politiques de confidentialité. Pour toute
@@ -1601,6 +1594,17 @@
         </button>
       </div>
     </dialog>
+    <section class="consent-panel" id="consent-panel" aria-labelledby="consent-title" hidden>
+      <h2 id="consent-title">Votre confidentialité</h2>
+      <p>Avec votre accord, Google Ads mesure les clics vers le téléphone et WhatsApp
+        à l’aide de cookies publicitaires. Aucun nom, message ou renseignement médical
+        n’est transmis. Vous pouvez refuser et contacter le cabinet normalement.</p>
+      <div class="consent-actions">
+        <button type="button" class="btn btn-outline" id="consent-reject">Refuser</button>
+        <button type="button" class="btn btn-outline" id="consent-accept">Accepter la mesure</button>
+      </div>
+      <a href="#legal">En savoir plus</a>
+    </section>
     <script src="script.js" defer></script>
   </body>
 </html>

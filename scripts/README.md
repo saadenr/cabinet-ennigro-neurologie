@@ -52,3 +52,31 @@ Old page URLs redirect to the matching section of the single-page site.
 
 These checks do not verify Google Ads attribution, regulatory compliance, Google
 approval, or a production deployment. No campaign setting or budget was changed.
+
+## Consent and contact measurement (3 October 2026)
+
+`privacy.js` implements basic consent gating: no Google Ads script or contact
+event is sent before acceptance. Rejecting keeps calls and WhatsApp usable.
+Preferences are kept locally for 180 days and can be changed in the footer.
+Withdrawal clears first-party Ads cookies and reloads without the tag.
+Ad personalization and enhanced conversions are disabled in the site config.
+Maps and other external services are described separately in the privacy text;
+this panel controls Ads measurement, not all third-party resources.
+
+- Phone label (unchanged): `AW-17738408073/E-GBCKG53cEbEInBqopC`.
+- WhatsApp label: `AW-17738408073/dZvQCN6In48dEInBqopC`, zero MAD value.
+- Both measure link clicks, not completed calls, messages, bookings or visits.
+- In Ads, the existing action was renamed to `Clic téléphone - site web` and
+  enhanced conversions disabled for it. WhatsApp was created separately with
+  enhanced conversions disabled. No budget was changed.
+- The Ads wizard initially marked WhatsApp primary, in a website-contact goal
+  not selected by default for the account. Final secondary/observation setting
+  still needs verification because Edge accessibility stopped responding.
+
+Serve the repository at `http://127.0.0.1:8765` and run
+`node scripts/test-consent.cjs` with Playwright installed. `PLAYWRIGHT_MODULE`
+and `CHROME_PATH` optionally select a local module and Chrome executable.
+The test blocks all external requests, checks rejection, acceptance,
+persistence, withdrawal, distinct phone/WhatsApp labels, and five screen widths.
+No test conversions are sent to Google. Changes require deployment before
+they affect the public site.

@@ -23,7 +23,7 @@
   document.addEventListener("click", (e) => {
     if (!e.target.closest(".site-header")) closeMenu();
     const a = e.target.closest("a[href]");
-    if (!a || typeof window.gtag !== "function") return;
+    if (!a || !window.cabinetPrivacy?.allowed() || typeof window.gtag !== "function") return;
     // Track intent only. A telephone click is not a confirmed call or appointment.
     if (a.getAttribute("href").startsWith("tel:")) {
       window.gtag("event", "clic_telephone", {
@@ -38,6 +38,11 @@
       window.gtag("event", "clic_whatsapp", {
         event_category: "contact",
         event_label: "WhatsApp cabinet",
+      });
+      window.gtag("event", "conversion", {
+        send_to: "AW-17738408073/dZvQCN6In48dEInBqopC",
+        value: 0,
+        currency: "MAD",
       });
     }
   });
